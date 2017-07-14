@@ -1,0 +1,18 @@
+<template name="chat">
+  <div class="chat">
+    <div class="messages">
+      {{#each messages}}
+        {{> message}}
+      {{/each}}
+    </div>
+    <div class="my-message">
+      Your message
+    </div>
+    <div class="words">
+    </div>
+  </div>
+</template>
+
+<template name="message">
+  <div class="message {{#if me}}me{{/if}}">{{message}}</div>
+</template>

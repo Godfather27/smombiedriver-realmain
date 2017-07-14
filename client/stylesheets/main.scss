@@ -1,0 +1,61 @@
+/* SCSS declarations go here */
+
+$grey: #E9EAF3;
+
+html {
+  font-family: sans-serif;
+  color: #343353;
+}
+
+.clearfix::after{
+  clear: both;
+  content: '';
+}
+
+.sync{
+  text-align: center;
+
+  h1 {
+    font-size: 2em;
+  }
+
+  input {
+    border: 1px solid $grey;
+  }
+}
+
+
+.chat{
+  .messages {
+    padding: 1em 1em 4em 1em;
+    display: flex;
+    flex-direction: column;
+
+    .message{
+      border: 1px solid $grey;
+      padding: 1em;
+      max-width: 60%;
+      display: inline-block;
+      line-height: 1.4em;
+      margin-bottom: 0.5em;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &.me {
+        background: $grey;
+        align-self: flex-end;
+      }
+    }
+  }
+
+  .my-message{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.2em;
+    background: $grey;
+  }
+}
