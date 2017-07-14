@@ -1,6 +1,8 @@
 /* SCSS declarations go here */
 
 $grey: #E9EAF3;
+$turkis: #0ABFB3;
+$blue: #659CEF;
 
 html {
   font-family: sans-serif;
@@ -26,6 +28,17 @@ html {
 
 
 .chat{
+  .top-border {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: 5px solid transparent;
+    -moz-border-image: -moz-linear-gradient(left, $turkis 0%, $blue 100%);
+    -webkit-border-image: -webkit-linear-gradient(left, $turkis 0%, $blue 100%);
+    border-image: linear-gradient(to right, $turkis 0%, $blue 100%);
+    border-image-slice: 1;
+  }
   .messages {
     padding: 1em 1em 4em 1em;
     display: flex;
@@ -51,11 +64,34 @@ html {
   }
 
   .my-message{
+    border-top: 10px solid white;
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     padding: 1.2em;
     background: $grey;
+    &.active{
+      bottom: 7.4em;
+    }
+  }
+
+  .words{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5em;
+    padding: 1.2em;
+    background: #3B3F57;
+  }
+
+  .answer{
+    color: white;
+    border: 1px solid white;
+    border-radius: 2px;
+    display: inline-block;
+    padding: 0.2em;
+    margin: 0.2em;
   }
 }

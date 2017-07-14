@@ -1,18 +1,30 @@
-<template name="chat">
+<template name="t_chat">
   <div class="chat">
+    <div class="top-border"></div>
     <div class="messages">
       {{#each messages}}
-        {{> message}}
+        {{> t_message}}
       {{/each}}
     </div>
-    <div class="my-message">
+    <div class="my-message {{#if textToggle}}active{{/if}}">
       Your message
     </div>
-    <div class="words">
-    </div>
+    {{#if textToggle}}
+      <div class="words">
+        {{#each answer}}
+          {{> t_answer}}
+        {{/each}}
+      </div>
+    {{/if}}
   </div>
 </template>
 
-<template name="message">
-  <div class="message {{#if me}}me{{/if}}">{{message}}</div>
+<template name="t_message">
+  <div class="message {{#if me}}me{{/if}}">{{question}}</div>
+</template>
+
+<template name="t_answer">
+  <div class="answer">
+    {{partialAnswer}}
+  </div>
 </template>
