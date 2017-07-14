@@ -1,4 +1,7 @@
 <template name="lobby">
     <input type="text" id="lobby_input_room_id" placeholder="Room Code">
     <button id="lobby_submit">Enter Code</button>
+    {{#if joined_room}}
+        <button id="lobby_add_points">Add points</button>
+    {{/if}}
 </template>
