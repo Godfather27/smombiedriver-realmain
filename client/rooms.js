@@ -21,5 +21,3 @@ function joinRoom(room_id) {
             }
         });
 }
-
-createRoom();
