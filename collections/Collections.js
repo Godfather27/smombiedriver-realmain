@@ -1,5 +1,5 @@
 
-// {_id: UUID, dialog_line: int, message: string}
+// {_id: UUID, dialog_line: int, no: int, message: string}
 Dialog = new Mongo.Collection('dialog');
 
 // {_id_ UUID, room_id: random_string}
