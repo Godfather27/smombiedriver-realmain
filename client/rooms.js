@@ -18,6 +18,7 @@ function joinRoom(room_id) {
                 console.log(err.message);
             } else {
                 console.log(res);
+                Session.set("room_id", room_id);
             }
         });
 }
