@@ -23,7 +23,7 @@ Meteor.methods({
     'checkAnswer'({answer_id, input_answer, correct_answer, room_id}) {
         // get answer from collection / json array
         if (correct_answer === input_answer) {
-            Points.upsert({room_id : room_id}, { $inc: { points: 1 } });
+            Points.upsert({room_id : room_id}, { $inc: { points: 25 } });
             return Points.findOne({room_id: room_id}).points;
         } else {
             return false;
