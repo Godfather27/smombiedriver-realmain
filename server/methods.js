@@ -26,6 +26,9 @@ Meteor.methods({
     },
     'notify'({room_id, notification_type}) {
         Notifications.insert({room_id: room_id, notification_type: notification_type, timestamp: Date.now()});
+    },
+    'setPoints'({room_id, amount}) {
+        Points.upsert({room_id : room_id}, { $inc: { points: amount } });
     }
 });
 
