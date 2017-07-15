@@ -1,11 +1,12 @@
 import { Template } from 'meteor/templating';
 import './chat.html';
 import { ReactiveDict } from 'meteor/reactive-dict';
+import './create.js'
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 
 // replace dialog constant with real questions
 let DIALOG;
-let ringtone = new Audio('ringtone.mp3');
+createjs.Sound.registerSound("ringtone.mp3", "ringtone");
 
 const fillDialog = () => {
   DIALOG = [
@@ -100,7 +101,7 @@ const nextLevel = (instance) => {
   instance.state.set('openAnswers', shuffle(normalize(nextDialog[0])));
   instance.state.set('currentQuestion', {answer_id: nextDialog[0].answer_id, solution: normalize(nextDialog[0]).map(flattenObjectArray).join(' ')});
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-  ringtone.play();
+  createjs.Sound.play("ringtone");
   if (navigator.vibrate) {
     navigator.vibrate([500, 300, 500]);
   }
