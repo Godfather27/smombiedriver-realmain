@@ -24,6 +24,9 @@ Meteor.methods({
         } else {
             return false;
         }
+    },
+    'notify'({room_id, notification_type}) {
+        Notifications.insert({room_id: room_id, notification_type: notification_type});
     }
 });
 
