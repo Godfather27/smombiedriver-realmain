@@ -4,17 +4,22 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 
 // replace dialog constant with real questions
-const DIALOG = [
-  {answer_id:'ABCDE', question: 'Is this a question1?', answer: 'This is; the correct; answer for; this question1' },
-  {answer_id:'ABCDF', question: 'Is this a question2?', answer: 'This is; the correct; answer for; this question2' },
-  {answer_id:'ABCDG', question: 'Is this a question3?', answer: 'This is; the correct; answer for; this question3' },
-  {answer_id:'ABCDH', question: 'Is this a question4?', answer: 'This is; the! ,correct; .answer for; this question4' }
-];
+let DIALOG;
+
+const fillDialog = () => {
+  DIALOG = [
+    {question: 'Is this a question1?', answer: 'This is; the correct; answer for; this question1'},
+    {question: 'Is this a question2?', answer: 'This is; the correct; answer for; this question2'},
+    {question: 'Is this a question3?', answer: 'This is; the correct; answer for; this question3'},
+    {question: 'Is this a question4?', answer: 'This is; the! ,correct; .answer for; this question4'}
+  ];
+}
 let notificationObserver;
 
 
 // helperfunctions
 const randomDialog = () => {
+    if(DIALOG.length === 0) fillDialog()
     return DIALOG.splice(Math.floor(Math.random() * DIALOG.length), 1)
   }
 const mapStringsToObjects = e => {
@@ -59,6 +64,7 @@ const clearLevel = (instance) => {
 
 Template.t_chat.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
+  fillDialog()
   let initialDialog = randomDialog();
   // set initial state
   this.state.set('textToggle', false);
