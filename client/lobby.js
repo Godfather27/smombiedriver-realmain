@@ -28,14 +28,12 @@ Template.lobby.onCreated(function bodyOnCreated() {
     notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
       // ignore notifications which are older than 50 seconds
-      if(fields.timestamp < (Date.now() - 50000)) {
+      if(fields.timestamp < (Date.now() - 25000)) {
         return
       }
 
       switch(fields.notification_type){
         case NotificationTypeEnum.NEW_MESSAGE:
-          console.log(id, fields.notification_type)
-          nextLevel(that);
           break;
         case NotificationTypeEnum.GAME_OVER:
           break;

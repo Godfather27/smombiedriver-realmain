@@ -73,13 +73,11 @@ Template.t_chat.onCreated(function bodyOnCreated() {
   notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
       if(fields.timestamp < (Date.now() - 25000)) {
-        console.log('notification too old')
         return
       }
 
       switch(fields.notification_type){
         case NotificationTypeEnum.NEW_MESSAGE:
-          console.log(id, fields.notification_type)
           nextLevel(that);
           break;
         case NotificationTypeEnum.GAME_OVER:
@@ -148,7 +146,6 @@ Template.t_chat.events({
                 if (err) {
                     console.log(err.message);
                 } else {
-                    console.log(res);
                     clearLevel(instance)
                 }
             });
