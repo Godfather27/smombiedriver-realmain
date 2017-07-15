@@ -60,7 +60,7 @@ const shuffle = (a) => {
     return a;
 }
 const normalize = (a) => {
-  return a.answer.toLowerCase().replace(/[\!\,\.]/g,'').split(';').map(mapStringsToObjects)
+  return a.answer.split(';').map(mapStringsToObjects)
 }
 const nextLevel = (instance) => {
   let nextDialog = randomDialog();
@@ -86,16 +86,18 @@ const clearLevel = (instance, correct) => {
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
   setTimeout(()=>{instance.state.set('inactive', true)},1000);
 }
+const resetGame = (instance) => {
+  fillDialog()
+  instance.state.set('textToggle', false);
+  instance.state.set('chatHistory', []);
+  instance.state.set('openAnswers', []);
+  instance.state.set('chosenAnswers', []);
+  instance.state.set('inactive', false);
+}
 
 Template.t_chat.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
-  fillDialog()
-  // set initial state
-  this.state.set('textToggle', false);
-  this.state.set('chatHistory', []);
-  this.state.set('openAnswers', []);
-  this.state.set('chosenAnswers', []);
-  this.state.set('inactive', false);
+  resetGame(this)
 
   let that = this
   // Listen for new Notifications
@@ -111,6 +113,12 @@ Template.t_chat.onCreated(function bodyOnCreated() {
           Meteor.call('solveNotification', {id})
           break;
         case NotificationTypeEnum.GAME_OVER:
+          break;
+        case NotificationTypeEnum.GAME_END:
+          break;
+        case NotificationTypeEnum.GAME_START:
+          resetGame(that);
+          nextLevel(that);
           break;
         default:
           Meteor.Error("unexpected notification")
