@@ -26,7 +26,7 @@ Template.lobby.onCreated(function bodyOnCreated() {
 
     notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
-      // ignore notifications which are older than 50 seconds
+      // ignore notifications which are older than 25 seconds
       if(fields.timestamp < (Date.now() - 25000)) {
         return
       }
@@ -60,7 +60,7 @@ Template.lobby.helpers({
     'joined_room'() {
         let instance = Template.instance();
         /* REMOVE WHEN HOOKED UP WITH DRIVING GAME */
-        return Session.get("room_id") //&& instance.state.get('gameStarted');
+        return Session.get("room_id") && instance.state.get('gameStarted');
     },
     'error'(){
         let instance = Template.instance();

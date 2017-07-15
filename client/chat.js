@@ -19,7 +19,9 @@ let notificationObserver;
 
 // helperfunctions
 const randomDialog = () => {
-    if(DIALOG.length === 0) fillDialog()
+    if(DIALOG.length === 0) {
+      fillDialog()
+    }
     return DIALOG.splice(Math.floor(Math.random() * DIALOG.length), 1)
   }
 const mapStringsToObjects = e => {
@@ -49,7 +51,7 @@ const nextLevel = (instance) => {
   if (navigator.vibrate) {
     navigator.vibrate([500, 300, 500]);
   }
-  // instance.state.set('inactive', false);
+  instance.state.set('inactive', false);
 }
 const clearLevel = (instance) => {
   let chatHistory = instance.state.get('chatHistory');
@@ -59,20 +61,18 @@ const clearLevel = (instance) => {
   instance.state.set('textToggle', false);
   instance.state.set('chosenAnswers', []);
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-  //setTimeout(()=>{instance.state.set('inactive', true)},500);
+  setTimeout(()=>{instance.state.set('inactive', true)},500);
 }
 
 Template.t_chat.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
   fillDialog()
-  let initialDialog = randomDialog();
   // set initial state
   this.state.set('textToggle', false);
-  this.state.set('chatHistory', initialDialog);
-  this.state.set('openAnswers', shuffle(normalize(initialDialog[0])));
+  this.state.set('chatHistory', []);
+  this.state.set('openAnswers', []);
   this.state.set('chosenAnswers', []);
-  this.state.set('currentQuestion', {answer_id: initialDialog[0].answer_id, solution: normalize(initialDialog[0]).map(flattenObjectArray).join(' ')})
-  // this.state.set('inactive', false);
+  this.state.set('inactive', false);
 
   let that = this
   // Listen for new Notifications
@@ -125,9 +125,9 @@ Template.t_chat.events({
     'click .my-message'(event, instance){
       let chatHistory = instance.state.get('chatHistory')
       /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
-      if(chatHistory[chatHistory.length-1].isSolved){
-        Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, solved: false })
-      }
+      // if(chatHistory[chatHistory.length-1].isSolved){
+      //   Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, solved: false })
+      // }
       /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
       instance.state.set('textToggle', !instance.state.get('textToggle'));
     },
