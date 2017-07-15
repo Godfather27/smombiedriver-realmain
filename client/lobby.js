@@ -9,6 +9,7 @@ Template.lobby.events({
                 } else {
                     instance.state.set('correct', true);
                     Session.set("room_id", room_id);
+                    instance.state.set('error', null);
                 }
             });
     }
