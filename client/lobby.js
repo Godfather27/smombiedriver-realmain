@@ -38,6 +38,7 @@ Template.lobby.onCreated(function bodyOnCreated() {
           break;
         case NotificationTypeEnum.GAME_START:
           that.state.set('gameStarted', true);
+          notificationObserver.stop();
           break;
         default:
           Meteor.Error("unexpected notification")
