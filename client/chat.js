@@ -171,10 +171,7 @@ Template.t_chat.events({
                     console.log(err.message);
                 } else {
                   if(!res){
-                    Meteor.call('notify',{
-                      room_id: Session.get('room_id'),
-                      notification_type: NotificationTypeEnum.WRONG_ANSWER
-                    });
+                    Meteor.call('notify', Session.get('room_id'), NotificationTypeEnum.WRONG_ANSWER);
                   }
                   clearLevel(instance)
                 }
