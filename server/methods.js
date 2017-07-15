@@ -10,6 +10,7 @@ Meteor.methods({
         let room = Rooms.findOne({room_id: room_id});
         if (room) {
             Rooms.update({room_id: room_id}, { $set: { app_connected: true } });
+            Notifications.insert({room_id: room_id, notification_type: NotificationTypeEnum.NEW_MESSAGE, timestamp: Date.now()});
             return true;
         } else {
             throw new Meteor.Error("Room not found");
@@ -24,13 +25,20 @@ Meteor.methods({
         // get answer from collection / json array
         if (correct_answer === input_answer) {
             Points.upsert({room_id : room_id}, { $inc: { points: 25 } });
+            Meteor.call('notifyDeferred', room_id, NotificationTypeEnum.NEW_MESSAGE, false);
             return Points.findOne({room_id: room_id}).points;
         } else {
+            Meteor.call('notifyDeferred', room_id, NotificationTypeEnum.NEW_MESSAGE, false);
             return false;
         }
     },
-    'notify' : function (room_id, notification_type) {
-        Notifications.insert({room_id: room_id, notification_type: notification_type, solved: false});
+    'notify' : function (room_id, notification_type, solved) {
+        Notifications.insert({room_id: room_id, notification_type: notification_type, solved: solved });
+    },
+    'notifyDeferred' : function (room_id, notification_type, solved) {
+        Meteor.setTimeout(function(){
+            console.log(Notifications.insert({room_id: room_id, notification_type: notification_type, solved: solved }));
+        }, 4000);
     },
     'solveNotification'({id}) {
         Notifications.update({_id: id}, { $set: { solved: true }});
