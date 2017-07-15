@@ -7,7 +7,6 @@ Template.lobby.events({
                 if (err) {
                     instance.state.set('error', err.message);
                 } else {
-                    console.log(res);
                     instance.state.set('correct', true);
                     setTimeout(()=>{
                         Session.set("room_id", room_id);
