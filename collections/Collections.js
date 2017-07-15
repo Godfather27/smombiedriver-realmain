@@ -6,4 +6,7 @@
 Rooms = new Mongo.Collection('rooms');
 
 // {_id: UUID, room_id: fk.rooms, points: int}
-Points = new Mongo.Collection('points')
+Points = new Mongo.Collection('points');
+
+// {_id: UUID, room_id: fk.rooms, state: string}
+GameStates = new Mongo.Collection('game_states');
