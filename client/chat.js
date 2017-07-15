@@ -5,6 +5,7 @@ navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mo
 
 // replace dialog constant with real questions
 let DIALOG;
+let ringtone = new Audio('ringtone.mp3');
 
 const fillDialog = () => {
   DIALOG = [
@@ -99,7 +100,7 @@ const nextLevel = (instance) => {
   instance.state.set('openAnswers', shuffle(normalize(nextDialog[0])));
   instance.state.set('currentQuestion', {answer_id: nextDialog[0].answer_id, solution: normalize(nextDialog[0]).map(flattenObjectArray).join(' ')});
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-
+  ringtone.play();
   if (navigator.vibrate) {
     navigator.vibrate([500, 300, 500]);
   }
@@ -201,6 +202,9 @@ Template.t_chat.events({
       let chosenAnswers = instance.state.get('chosenAnswers');
       instance.state.set('chosenAnswers', [...chosenAnswers, ...openAnswers.splice(index, 1)]);
       instance.state.set('openAnswers', openAnswers);
+      if (navigator.vibrate) {
+        navigator.vibrate(200);
+      }
 
       // clear level if all answers have been chosen
       if(instance.state.get('openAnswers').length === 0){
