@@ -45,6 +45,9 @@ Meteor.methods({
     },
     'setPoints': function (room_id, amount) {
         Points.upsert({room_id : room_id}, { $inc: { points: amount } });
+    },
+    'resetPoints': function(room_id) {
+        Points.remove({room_id : room_id});
     }
 });
 
