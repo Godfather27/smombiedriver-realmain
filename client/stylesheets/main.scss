@@ -7,6 +7,12 @@ $blue: #659CEF;
 html {
   font-family: sans-serif;
   color: #343353;
+
+  -o-user-select: none;
+  user-select: none;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
 }
 
 .clearfix::after{
@@ -43,6 +49,9 @@ html {
     padding: 1em 1em 4em 1em;
     display: flex;
     flex-direction: column;
+    &.active{
+      padding-bottom: 7.4em;
+    }
 
     .message{
       border: 1px solid $grey;

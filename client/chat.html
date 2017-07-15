@@ -1,7 +1,7 @@
 <template name="t_chat">
   <div class="chat">
     <div class="top-border"></div>
-    <div class="messages">
+    <div class="messages {{#if textToggle}}active{{/if}}">
       {{#each messages}}
         {{> t_message}}
       {{/each}}
@@ -20,7 +20,10 @@
 </template>
 
 <template name="t_message">
-  <div class="message {{#if me}}me{{/if}}">{{question}}</div>
+  <div class="message">{{question}}</div>
+  {{#if isSolved}}
+    <div class="message me">{{answer}}</div>
+  {{/if}}
 </template>
 
 <template name="t_answer">
