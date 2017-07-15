@@ -23,11 +23,18 @@ const mapStringsToObjects = e => {
 const flattenObjectArray = e=> {
     return e.partialAnswer
   }
+const shuffle = (a) => {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+    return a;
+}
 const nextLevel = (instance) => {
   let nextDialog = randomDialog();
 
   instance.state.set('chatHistory', [...instance.state.get('chatHistory'), ...nextDialog]);
-  instance.state.set('openAnswers', nextDialog[0].answer.split('; ').map(mapStringsToObjects));
+  instance.state.set('openAnswers', shuffle(nextDialog[0].answer.split('; ').map(mapStringsToObjects)));
   instance.state.set('currentQuestion', {answer_id: nextDialog[0].answer_id, solution: nextDialog[0].answer.split('; ').join(' ')})
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
 
@@ -53,7 +60,7 @@ Template.t_chat.onCreated(function bodyOnCreated() {
   // set initial state
   this.state.set('textToggle', false);
   this.state.set('chatHistory', initialDialog);
-  this.state.set('openAnswers', initialDialog[0].answer.split('; ').map(mapStringsToObjects));
+  this.state.set('openAnswers', shuffle(initialDialog[0].answer.split('; ').map(mapStringsToObjects)));
   this.state.set('chosenAnswers', []);
   this.state.set('currentQuestion', {answer_id: initialDialog[0].answer_id, solution: initialDialog[0].answer.split('; ').join(' ')})
   // this.state.set('inactive', false);
@@ -62,7 +69,7 @@ Template.t_chat.onCreated(function bodyOnCreated() {
   // Listen for new Notifications
   notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
-      if(fields.timestamp < (Date.now() - 100000)) {
+      if(fields.timestamp < (Date.now() - 50000)) {
         console.log('notification too old')
         return
       }

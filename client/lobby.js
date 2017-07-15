@@ -23,10 +23,12 @@ Template.lobby.onCreated(function bodyOnCreated() {
     this.state.set('error', false);
     this.state.set('gameStarted', false);
 
+    let that = this;
+
     notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
-      if(fields.timestamp < (Date.now() - 100000)) {
-        console.log('notification too old')
+      // ignore notifications which are older than 50 seconds
+      if(fields.timestamp < (Date.now() - 50000)) {
         return
       }
 
@@ -36,6 +38,9 @@ Template.lobby.onCreated(function bodyOnCreated() {
           nextLevel(that);
           break;
         case NotificationTypeEnum.GAME_OVER:
+          break;
+        case NotificationTypeEnum.GAME_START:
+          that.state.set('gameStarted', true);
           break;
         default:
           Meteor.Error("unexpected notification")
@@ -56,7 +61,8 @@ Template.lobby.onCreated(function bodyOnCreated() {
 Template.lobby.helpers({
     'joined_room'() {
         let instance = Template.instance();
-        return Session.get("room_id") && instance.state.get('gameStarted');
+        /* REMOVE WHEN HOOKED UP WITH DRIVING GAME */
+        return Session.get("room_id") //&& instance.state.get('gameStarted');
     },
     'error'(){
         let instance = Template.instance();
