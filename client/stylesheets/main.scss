@@ -130,7 +130,8 @@ html {
       line-height: 1.4em;
       margin-bottom: 0.5em;
       animation-name: receive;
-      animation-duration: .2s;
+      animation-duration: .4s;
+      animation-timing-function: ease;
 
       &:last-child {
         margin-bottom: 0;
