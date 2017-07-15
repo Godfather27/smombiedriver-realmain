@@ -8,9 +8,7 @@ Template.lobby.events({
                     instance.state.set('error', err.message);
                 } else {
                     instance.state.set('correct', true);
-                    setTimeout(()=>{
-                        Session.set("room_id", room_id);
-                    }, 500);
+                    Session.set("room_id", room_id);
                 }
             });
     }
@@ -59,8 +57,7 @@ Template.lobby.onCreated(function bodyOnCreated() {
 Template.lobby.helpers({
     'joined_room'() {
         let instance = Template.instance();
-        /* REMOVE WHEN HOOKED UP WITH DRIVING GAME */
-        return Session.get("room_id") && instance.state.get('gameStarted');
+        return Session.get("room_id") && instance.state.get('gameStarted')
     },
     'error'(){
         let instance = Template.instance();

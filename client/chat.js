@@ -8,10 +8,32 @@ let DIALOG;
 
 const fillDialog = () => {
   DIALOG = [
-    {question: 'Is this a question1?', answer: 'This is; the correct; answer for; this question1'},
-    {question: 'Is this a question2?', answer: 'This is; the correct; answer for; this question2'},
-    {question: 'Is this a question3?', answer: 'This is; the correct; answer for; this question3'},
-    {question: 'Is this a question4?', answer: 'This is; the! ,correct; .answer for; this question4'}
+    {question: "Do you know where my toast is?", answer: "It's; in; the toaster.; Enjoy!"},
+    {question: "Happy Birthday Bro!", answer: "Happy; Birthday; to you; too!"},
+    {question: "How is the driving test going?", answer: "Great!; I think; I'm; nailing it."},
+    {question: "What do you think about my outfit?", answer: "I don't; give; a; damn."},
+    {question: "Good bye, old friend!", answer: "May; the force; be; with; you."},
+    {question: "Mr. Smith just was here. He wanted to sell me a toaster, again.", answer: "I told you,; stay away; from him."},
+    {question: "It took me 9 hours to clean up your mess, you pig!", answer: "You make me; want to be; a better man."},
+    {question: "All you need is love.", answer: "Love is; all; you; need."},
+    {question: "By the way... what did you do to the cat!?", answer: "Two; words:; washing; machine"},
+    {question: "Sure, but what is your favourite type of burger?", answer: "They call it; a royale; with cheese."},
+    {question: "Do you remeber the famous song from Ray Charles?", answer: "Do you mean; Hit; the; road; Jack?"},
+    {question: "And what are your plans for today?", answer: "I'm having; an old friend; for dinner."},
+    {question: "Really? Tell me more about it!", answer: "What we've got here; is a failure; to communicate."},
+    {question: "Honey I lost my wallet, do you know where I put it?", answer: "It's; under; the; sofa."},
+    {question: "What shall I make for lunch tonight?", answer: "Please; cook; me; some; eggs."},
+    {question: "Would you like to go to wonder wharf this weekend?", answer: "I hate; Mr.; Fischoeder."},
+    {question: "Mr. biggles just ate your shoes.", answer: "Red; cats; are just; the sweetes."},
+    {question: "Did you know that in Germany 2016 3214 people died in car accidents?", answer: "You; only; live; once."},
+    {question: "Do you rember the title of the last Batman movie from Christopher Nolan?", answer: "The Dark Knight Rises"},
+    {question: "How was the movie title based on J. K. Rowling work after the Harry Potter series?", answer: "Fantastic Beasts; and; where; to find them"},
+    {question: "What was the first science fiction film from Steven Spielberg?", answer: "Close; Encounters; of the; Third Kind"},
+    {question: "Help! Our house is on fire!!1", answer: "Please; put it; out."},
+    {question: "When will I see you again?", answer: "Maybe; later."},
+    {question: "Can you bring some milk on your way home?", answer: "I'm; a little bit; busy; right now."},
+    {question: "Do you want some chocolate?", answer: "Please stop; writing; me; messages."},
+    {question: "But when will you be home?", answer: "I will; be; home; at; half past; six,; if I manage; to stay; alive."}
   ];
 }
 let notificationObserver;
@@ -153,7 +175,13 @@ Template.t_chat.events({
                 if (err) {
                     console.log(err.message);
                 } else {
-                    clearLevel(instance)
+                  if(!res){
+                    Meteor.call('notify',{
+                      room_id: Session.get('room_id'),
+                      notification_type: NotificationTypeEnum.WRONG_ANSWER
+                    });
+                  }
+                  clearLevel(instance)
                 }
             });
       }

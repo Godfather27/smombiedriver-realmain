@@ -30,7 +30,7 @@ Meteor.methods({
         }
     },
     'notify' : function (room_id, notification_type) {
-        Notifications.insert({room_id: room_id, notification_type: notification_type, timestamp: Date.now()});
+        Notifications.insert({room_id: room_id, notification_type: notification_type, solved: false});
     },
     'solveNotification'({id}) {
         Notifications.update({_id: id}, { $set: { solved: true }});
