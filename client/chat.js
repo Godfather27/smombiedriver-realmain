@@ -146,11 +146,6 @@ Template.t_chat.events({
     // handle click on "fake Message Input field"
     'click .my-message'(event, instance){
       let chatHistory = instance.state.get('chatHistory')
-      /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
-      // if(chatHistory[chatHistory.length-1].isSolved){
-      //   Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, solved: false })
-      // }
-      /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
       instance.state.set('textToggle', !instance.state.get('textToggle'));
     },
 
