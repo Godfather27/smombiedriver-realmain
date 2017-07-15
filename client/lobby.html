@@ -1,8 +1,15 @@
 <template name="lobby">
-    {{#if joined_room}}
-        <button id="lobby_add_points">Add points</button>
-    {{else}}
+  {{#if joined_room}}
+    {{> t_chat}}
+  {{else}}
+    <div class="lobby {{#if correct}}correct{{/if}}">
+      <div class="wrapper">
         <input type="text" id="lobby_input_room_id" placeholder="Room Code">
-        <button id="lobby_submit">Enter Code</button>
-    {{/if}}
+        <button id="lobby_submit">Confirm</button>
+        {{#if error}}
+            <div class="error">{{error}}</div>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
 </template>

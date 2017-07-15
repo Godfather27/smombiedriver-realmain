@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 import './chat.html';
 import { ReactiveDict } from 'meteor/reactive-dict';
+navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 
 // replace dialog constant with real questions
 const DIALOG = [
@@ -22,13 +23,25 @@ const mapStringsToObjects = e => {
 const flattenObjectArray = e=> {
     return e.partialAnswer
   }
+const shuffle = (a) => {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+    return a;
+}
 const nextLevel = (instance) => {
   let nextDialog = randomDialog();
 
   instance.state.set('chatHistory', [...instance.state.get('chatHistory'), ...nextDialog]);
-  instance.state.set('openAnswers', nextDialog[0].answer.split('; ').map(mapStringsToObjects));
+  instance.state.set('openAnswers', shuffle(nextDialog[0].answer.split('; ').map(mapStringsToObjects)));
   instance.state.set('currentQuestion', {answer_id: nextDialog[0].answer_id, solution: nextDialog[0].answer.split('; ').join(' ')})
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+
+  if (navigator.vibrate) {
+    navigator.vibrate([500, 300, 500]);
+  }
+  // instance.state.set('inactive', false);
 }
 const clearLevel = (instance) => {
   let chatHistory = instance.state.get('chatHistory');
@@ -38,8 +51,8 @@ const clearLevel = (instance) => {
   instance.state.set('textToggle', false);
   instance.state.set('chosenAnswers', []);
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+  // instance.state.set('inactive', true);
 }
-
 
 Template.t_chat.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
@@ -47,14 +60,20 @@ Template.t_chat.onCreated(function bodyOnCreated() {
   // set initial state
   this.state.set('textToggle', false);
   this.state.set('chatHistory', initialDialog);
-  this.state.set('openAnswers', initialDialog[0].answer.split('; ').map(mapStringsToObjects));
+  this.state.set('openAnswers', shuffle(initialDialog[0].answer.split('; ').map(mapStringsToObjects)));
   this.state.set('chosenAnswers', []);
   this.state.set('currentQuestion', {answer_id: initialDialog[0].answer_id, solution: initialDialog[0].answer.split('; ').join(' ')})
+  // this.state.set('inactive', false);
 
   let that = this
+  // Listen for new Notifications
   notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
-      if(fields.timestamp < (Date.now()-1000)) return
+      if(fields.timestamp < (Date.now() - 50000)) {
+        console.log('notification too old')
+        return
+      }
+
       switch(fields.notification_type){
         case NotificationTypeEnum.NEW_MESSAGE:
           console.log(id, fields.notification_type)
@@ -70,6 +89,10 @@ Template.t_chat.onCreated(function bodyOnCreated() {
 });
 
 Template.t_chat.helpers({
+  inactive(){
+    let instance = Template.instance();
+    return instance.state.get('inactive');
+  },
   messages(){
     let instance = Template.instance();
     return instance.state.get('chatHistory');
@@ -93,11 +116,11 @@ Template.t_chat.events({
     // handle click on "fake Message Input field"
     'click .my-message'(event, instance){
       let chatHistory = instance.state.get('chatHistory')
-      /* ------------------- REPLACE WITH NEXT LEVEL ON MESSAGE RECEIVED ----------------------- */
-      // if(chatHistory[chatHistory.length-1].isSolved){
-      //   Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, timestamp: Date.now() })
-      // }
-      /* ------------------- REPLACE WITH NEXT LEVEL ON MESSAGE RECEIVED ----------------------- */
+      /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
+      if(chatHistory[chatHistory.length-1].isSolved){
+        Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, timestamp: Date.now() })
+      }
+      /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
       instance.state.set('textToggle', !instance.state.get('textToggle'));
     },
 

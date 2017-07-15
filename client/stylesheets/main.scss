@@ -3,10 +3,17 @@
 $grey: #E9EAF3;
 $turkis: #0ABFB3;
 $blue: #659CEF;
+$purple: #343353;
+$white: #fff;
+
+html, body {
+  box-sizing: border-box;
+  height: 100%;
+}
 
 html {
   font-family: sans-serif;
-  color: #343353;
+  color: $purple;
 
   -o-user-select: none;
   user-select: none;
@@ -20,18 +27,68 @@ html {
   content: '';
 }
 
-.sync{
-  text-align: center;
+.lobby {
+  margin: 0;
+  padding-top: 25%;
+  background: linear-gradient(to right, $turkis 0%, $blue 100%);
+  width: 100%;
+  height: 100%;
+  transition: height .5s, padding-top .5s;
 
-  h1 {
-    font-size: 2em;
+  &.correct {
+    padding-top: 0%;
+    height: 10px;
+
+    * {
+      opacity: 0;
+    }
   }
 
-  input {
-    border: 1px solid $grey;
+  .wrapper{
+    box-sizing: border-box;
+    width: 75%;
+    padding: 1em;
+    margin: 0 auto;
+    background: $white;
+
+    * {
+      box-sizing: border-box;
+    }
+    h1 {
+      font-size: 2em;
+    }
+
+    input {
+      border: 1px solid $grey;
+      padding: 1em;
+      margin-bottom: 1em;
+      width: 100%;
+    }
+    button {
+      width: 50%;
+      margin: 0 auto;
+      display: block;
+      padding: 1em;
+    }
+
+    .error{
+      text-align: center;
+      padding-top: 1em;
+      color: #f22;
+    }
   }
 }
 
+.inactive{
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: black;
+  opacity: 0.8;
+}
 
 .chat{
   .top-border {
@@ -46,9 +103,12 @@ html {
     border-image-slice: 1;
   }
   .messages {
-    padding: 1em 1em 4em 1em;
+    padding: 1em;
+    padding-bottom: 4em;
     display: flex;
     flex-direction: column;
+    transition: padding-bottom .2s;
+
     &.active{
       padding-bottom: 7.4em;
     }
@@ -60,6 +120,8 @@ html {
       display: inline-block;
       line-height: 1.4em;
       margin-bottom: 0.5em;
+      animation-name: receive;
+      animation-duration: .2s;
 
       &:last-child {
         margin-bottom: 0;
@@ -80,6 +142,8 @@ html {
     width: 100%;
     padding: 1.2em;
     background: $grey;
+    transition: bottom .2s;
+
     &.active{
       bottom: 7.4em;
     }
@@ -87,12 +151,17 @@ html {
 
   .words{
     position: fixed;
-    bottom: 0;
+    bottom: -7.4em;
     left: 0;
     width: 100%;
     height: 5em;
     padding: 1.2em;
     background: #3B3F57;
+    transition: bottom .2s;
+
+    &.active {
+      bottom: 0;
+    }
   }
 
   .answer{
@@ -103,4 +172,9 @@ html {
     padding: 0.5em;
     margin: 0.2em;
   }
+}
+
+@keyframes receive {
+    from {margin-left: -75%;}
+    to {margin-left: 0;}
 }
