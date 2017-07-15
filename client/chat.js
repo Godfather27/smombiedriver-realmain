@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 import './chat.html';
 import { ReactiveDict } from 'meteor/reactive-dict';
+navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 
 // replace dialog constant with real questions
 const DIALOG = [
@@ -29,6 +30,11 @@ const nextLevel = (instance) => {
   instance.state.set('openAnswers', nextDialog[0].answer.split('; ').map(mapStringsToObjects));
   instance.state.set('currentQuestion', {answer_id: nextDialog[0].answer_id, solution: nextDialog[0].answer.split('; ').join(' ')})
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+
+  if (navigator.vibrate) {
+    navigator.vibrate([500, 300, 500]);
+  }
+  // instance.state.set('inactive', false);
 }
 const clearLevel = (instance) => {
   let chatHistory = instance.state.get('chatHistory');
@@ -38,6 +44,7 @@ const clearLevel = (instance) => {
   instance.state.set('textToggle', false);
   instance.state.set('chosenAnswers', []);
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+  // instance.state.set('inactive', true);
 }
 
 
@@ -50,11 +57,16 @@ Template.t_chat.onCreated(function bodyOnCreated() {
   this.state.set('openAnswers', initialDialog[0].answer.split('; ').map(mapStringsToObjects));
   this.state.set('chosenAnswers', []);
   this.state.set('currentQuestion', {answer_id: initialDialog[0].answer_id, solution: initialDialog[0].answer.split('; ').join(' ')})
+  // this.state.set('inactive', false);
 
   let that = this
   notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
-      if(fields.timestamp < (Date.now()-1000)) return
+      if(fields.timestamp < (Date.now() - 100000)) {
+        console.log('notification too old')
+        return
+      }
+
       switch(fields.notification_type){
         case NotificationTypeEnum.NEW_MESSAGE:
           console.log(id, fields.notification_type)
@@ -70,6 +82,10 @@ Template.t_chat.onCreated(function bodyOnCreated() {
 });
 
 Template.t_chat.helpers({
+  inactive(){
+    let instance = Template.instance();
+    return instance.state.get('inactive');
+  },
   messages(){
     let instance = Template.instance();
     return instance.state.get('chatHistory');
@@ -93,11 +109,11 @@ Template.t_chat.events({
     // handle click on "fake Message Input field"
     'click .my-message'(event, instance){
       let chatHistory = instance.state.get('chatHistory')
-      /* ------------------- REPLACE WITH NEXT LEVEL ON MESSAGE RECEIVED ----------------------- */
-      // if(chatHistory[chatHistory.length-1].isSolved){
-      //   Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, timestamp: Date.now() })
-      // }
-      /* ------------------- REPLACE WITH NEXT LEVEL ON MESSAGE RECEIVED ----------------------- */
+      /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
+      if(chatHistory[chatHistory.length-1].isSolved){
+        Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, timestamp: Date.now() })
+      }
+      /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
       instance.state.set('textToggle', !instance.state.get('textToggle'));
     },
 
