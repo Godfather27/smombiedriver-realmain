@@ -23,26 +23,26 @@ Template.lobby.onCreated(function bodyOnCreated() {
     let that = this;
 
     notificationObserver = Notifications.find().observeChanges({
-    added: function(id, fields) {
-      // ignore notifications which are older than 25 seconds
-      if(fields.timestamp < (Date.now() - 25000)) {
-        return
-      }
+        added: function(id, fields) {
+            if(fields.room_id !== Session.get('room_id') || fields.solved) {
+                return
+            }
 
-      switch(fields.notification_type){
-        case NotificationTypeEnum.NEW_MESSAGE:
-          break;
-        case NotificationTypeEnum.GAME_OVER:
-          break;
-        case NotificationTypeEnum.GAME_START:
-          that.state.set('gameStarted', true);
-          notificationObserver.stop();
-          break;
-        default:
-          Meteor.Error("unexpected notification")
-      }
-    }
-  });
+            switch(fields.notification_type){
+                case NotificationTypeEnum.NEW_MESSAGE:
+                    break;
+                case NotificationTypeEnum.GAME_OVER:
+                    break;
+                case NotificationTypeEnum.GAME_START:
+                    that.state.set('gameStarted', true);
+                    Meteor.call('solveNotification', {id})
+                    notificationObserver.stop();
+                    break;
+                default:
+                    Meteor.Error("unexpected notification")
+            }
+        }
+    });
 
     Meteor.call('getRoom',
         (err, res) => {
