@@ -11,5 +11,5 @@ Points = new Mongo.Collection('points');
 // {_id: UUID, room_id: fk.rooms, state: string}
 GameStates = new Mongo.Collection('game_states');
 
-// {_id: UUID, room_id: fk.rooms, notification_type: string}
+// {_id: UUID, room_id: fk.rooms, notification_type: string, timestamp: unix-timestamp}
 Notifications = new Mongo.Collection('notifications');

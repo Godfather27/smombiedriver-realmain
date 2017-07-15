@@ -9,8 +9,10 @@ const DIALOG = [
   {answer_id:'ABCDG', question: 'Is this a question3?', answer: 'This is; the correct; answer for; this question3' },
   {answer_id:'ABCDH', question: 'Is this a question4?', answer: 'This is; the correct; answer for; this question4' }
 ];
+let notificationObserver;
 
-// hilfsfunktionen
+
+// helperfunctions
 const randomDialog = () => {
     return DIALOG.splice(Math.floor(Math.random() * DIALOG.length), 1)
   }
@@ -42,13 +44,29 @@ const clearLevel = (instance) => {
 Template.t_chat.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
   let initialDialog = randomDialog();
-
   // set initial state
   this.state.set('textToggle', false);
   this.state.set('chatHistory', initialDialog);
   this.state.set('openAnswers', initialDialog[0].answer.split('; ').map(mapStringsToObjects));
   this.state.set('chosenAnswers', []);
   this.state.set('currentQuestion', {answer_id: initialDialog[0].answer_id, solution: initialDialog[0].answer.split('; ').join(' ')})
+
+  let that = this
+  notificationObserver = Notifications.find().observeChanges({
+    added: function(id, fields) {
+      if(fields.timestamp < (Date.now()-1000)) return
+      switch(fields.notification_type){
+        case NotificationTypeEnum.NEW_MESSAGE:
+          console.log(id, fields.notification_type)
+          nextLevel(that);
+          break;
+        case NotificationTypeEnum.GAME_OVER:
+          break;
+        default:
+          Meteor.Error("unexpected notification")
+      }
+    }
+  });
 });
 
 Template.t_chat.helpers({
@@ -56,7 +74,7 @@ Template.t_chat.helpers({
     let instance = Template.instance();
     return instance.state.get('chatHistory');
   },
-  answer(){
+  answers(){
     let instance = Template.instance();
     return instance.state.get('openAnswers')
   },
@@ -75,9 +93,11 @@ Template.t_chat.events({
     // handle click on "fake Message Input field"
     'click .my-message'(event, instance){
       let chatHistory = instance.state.get('chatHistory')
-      if(chatHistory[chatHistory.length-1].isSolved){
-        nextLevel(instance)
-      }
+      /* ------------------- REPLACE WITH NEXT LEVEL ON MESSAGE RECEIVED ----------------------- */
+      // if(chatHistory[chatHistory.length-1].isSolved){
+      //   Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, timestamp: Date.now() })
+      // }
+      /* ------------------- REPLACE WITH NEXT LEVEL ON MESSAGE RECEIVED ----------------------- */
       instance.state.set('textToggle', !instance.state.get('textToggle'));
     },
 
@@ -89,6 +109,7 @@ Template.t_chat.events({
       instance.state.set('chosenAnswers', [...chosenAnswers, ...openAnswers.splice(index, 1)]);
       instance.state.set('openAnswers', openAnswers);
 
+      // clear level if all answers have been chosen
       if(instance.state.get('openAnswers').length === 0){
         Meteor.call('checkAnswer',
             {
