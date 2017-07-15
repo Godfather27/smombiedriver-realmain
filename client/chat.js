@@ -72,13 +72,14 @@ Template.t_chat.onCreated(function bodyOnCreated() {
   // Listen for new Notifications
   notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
-      if(fields.timestamp < (Date.now() - 25000)) {
+      if(fields.room_id !== Session.get('room_id') || fields.solved) {
         return
       }
 
       switch(fields.notification_type){
         case NotificationTypeEnum.NEW_MESSAGE:
           nextLevel(that);
+          Meteor.call('solveNotification', {id})
           break;
         case NotificationTypeEnum.GAME_OVER:
           break;
@@ -119,7 +120,7 @@ Template.t_chat.events({
       let chatHistory = instance.state.get('chatHistory')
       /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
       if(chatHistory[chatHistory.length-1].isSolved){
-        Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, timestamp: Date.now() })
+        Meteor.call('notify', {room_id: Session.get('room_id'), notification_type: NotificationTypeEnum.NEW_MESSAGE, solved: false })
       }
       /* ------------------- REMOVE THIS WHEN HOOKED UP WITH DRIVING GAME ----------------------- */
       instance.state.set('textToggle', !instance.state.get('textToggle'));
