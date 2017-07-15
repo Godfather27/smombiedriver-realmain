@@ -147,6 +147,7 @@ Template.t_chat.events({
     'click .my-message'(event, instance){
       let chatHistory = instance.state.get('chatHistory')
       instance.state.set('textToggle', !instance.state.get('textToggle'));
+      $("html, body").animate({ scrollTop: $(document).height() }, "slow");
     },
 
     // handle clicks on partial answer divs
