@@ -32,15 +32,19 @@ Template.lobby.onCreated(function bodyOnCreated() {
                 case NotificationTypeEnum.NEW_MESSAGE:
                     break;
                 case NotificationTypeEnum.GAME_OVER:
+                    that.state.set('gameStarted', false);
+                    break;
+                case NotificationTypeEnum.GAME_END:
+                    that.state.set('gameStarted', false);
+                    that.state.set('correct', false);
                     break;
                 case NotificationTypeEnum.GAME_START:
                     that.state.set('gameStarted', true);
-                    Meteor.call('solveNotification', {id})
-                    notificationObserver.stop();
                     break;
                 default:
                     Meteor.Error("unexpected notification")
             }
+            Meteor.call('solveNotification', {id})
         }
     });
 
