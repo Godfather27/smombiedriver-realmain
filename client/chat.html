@@ -10,13 +10,11 @@
     <div class="my-message {{#if textToggle}}active{{/if}}">
       {{selectedMessage}}
     </div>
-    {{#if textToggle}}
-      <div class="words">
-        {{#each answers}}
-          {{> t_answer}}
-        {{/each}}
-      </div>
-    {{/if}}
+    <div class="words {{#if textToggle}}active{{/if}}">
+      {{#each answers}}
+        {{> t_answer}}
+      {{/each}}
+    </div>
   </div>
 </template>
 

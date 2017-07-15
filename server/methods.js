@@ -15,6 +15,11 @@ Meteor.methods({
             throw new Meteor.Error("Room not found");
         }
     },
+    'getRoom'() {
+        let rooms = Rooms.findOne({});
+        console.log(rooms);
+        return rooms;
+    },
     'checkAnswer'({answer_id, input_answer, correct_answer, room_id}) {
         // get answer from collection / json array
         if (correct_answer === input_answer) {

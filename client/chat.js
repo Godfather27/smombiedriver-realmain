@@ -47,7 +47,6 @@ const clearLevel = (instance) => {
   // instance.state.set('inactive', true);
 }
 
-
 Template.t_chat.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
   let initialDialog = randomDialog();
@@ -60,6 +59,7 @@ Template.t_chat.onCreated(function bodyOnCreated() {
   // this.state.set('inactive', false);
 
   let that = this
+  // Listen for new Notifications
   notificationObserver = Notifications.find().observeChanges({
     added: function(id, fields) {
       if(fields.timestamp < (Date.now() - 100000)) {
