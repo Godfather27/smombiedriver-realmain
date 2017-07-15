@@ -75,15 +75,16 @@ const nextLevel = (instance) => {
   }
   instance.state.set('inactive', false);
 }
-const clearLevel = (instance) => {
+const clearLevel = (instance, correct) => {
   let chatHistory = instance.state.get('chatHistory');
   chatHistory[chatHistory.length-1].isSolved = true;
+  chatHistory[chatHistory.length-1].correct = correct ? 'correct' : 'wrong';
   chatHistory[chatHistory.length-1].answer = instance.state.get('chosenAnswers').map(flattenObjectArray).join(" ");
   instance.state.set('chatHistory', chatHistory)
   instance.state.set('textToggle', false);
   instance.state.set('chosenAnswers', []);
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-  setTimeout(()=>{instance.state.set('inactive', true)},500);
+  setTimeout(()=>{instance.state.set('inactive', true)},1000);
 }
 
 Template.t_chat.onCreated(function bodyOnCreated() {
@@ -138,7 +139,12 @@ Template.t_chat.helpers({
   selectedMessage() {
     let instance = Template.instance();
     // show default message if no answer is selected yet
-    return instance.state.get('chosenAnswers').length === 0 ? "Your message" : instance.state.get('chosenAnswers').map(flattenObjectArray).join(" ")
+    if(instance.state.get('chosenAnswers').length === 0 && instance.state.get('textToggle')){
+      return ""
+    } else if(instance.state.get('chosenAnswers').length === 0) {
+      return "Your message"
+    }
+    return instance.state.get('chosenAnswers').map(flattenObjectArray).join(" ")
   }
 });
 
@@ -174,7 +180,7 @@ Template.t_chat.events({
                   if(!res){
                     Meteor.call('notify', Session.get('room_id'), NotificationTypeEnum.WRONG_ANSWER);
                   }
-                  clearLevel(instance)
+                  clearLevel(instance, res)
                 }
             });
       }

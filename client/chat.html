@@ -8,7 +8,7 @@
       {{/each}}
     </div>
     <div class="my-message {{#if textToggle}}active{{/if}}">
-      {{selectedMessage}}
+      {{#unless textToggle}}<span class="blink">|</span>{{/unless}}{{selectedMessage}}{{#if textToggle}}<span class="blink">|</span>{{/if}}
     </div>
     <div class="words {{#if textToggle}}active{{/if}}">
       {{#each answers}}
@@ -21,7 +21,7 @@
 <template name="t_message">
   <div class="message">{{question}}</div>
   {{#if isSolved}}
-    <div class="message me">{{answer}}</div>
+    <div class="message me {{correct}}">{{answer}}</div>
   {{/if}}
 </template>
 
