@@ -26,8 +26,10 @@ Meteor.methods({
         if (correct_answer === input_answer) {
             Points.upsert({room_id : room_id}, { $inc: { points: 25 } });
             Meteor.call('notifyDeferred', room_id, NotificationTypeEnum.NEW_MESSAGE, false);
+            Notifications.insert({room_id: room_id, notification_type: NotificationTypeEnum.RIGHT_ANSWER, solved: false });
             return Points.findOne({room_id: room_id}).points;
         } else {
+            Notifications.insert({room_id: room_id, notification_type: NotificationTypeEnum.WRONG_ANSWER, solved: false });
             Meteor.call('notifyDeferred', room_id, NotificationTypeEnum.NEW_MESSAGE, false);
             return false;
         }

@@ -3,5 +3,6 @@ NotificationTypeEnum = {
     NEW_MESSAGE: 2,
     GAME_START: 3,
     WRONG_ANSWER: 4,
-    GAME_END: 5
+    GAME_END: 5,
+    RIGHT_ANSWER: 6
 };
