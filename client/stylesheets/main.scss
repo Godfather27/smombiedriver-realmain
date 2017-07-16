@@ -1,10 +1,11 @@
 /* SCSS declarations go here */
 
 $grey: #E9EAF3;
-$turkis: #0ABFB3;
-$blue: #659CEF;
+$green: #4c713f;
+$blue: #476a3b;
 $purple: #343353;
 $white: #fff;
+$red: #94585d;
 
 html, body {
   box-sizing: border-box;
@@ -30,7 +31,9 @@ html {
 .lobby {
   margin: 0;
   padding-top: 25%;
-  background: linear-gradient(to right, $turkis 0%, $blue 100%);
+  background: url("Startscreen_fin.jpg");
+  background-size: cover;
+  background-position: -75%;
   width: 100%;
   height: 100%;
   transition: height .5s, padding-top .5s;
@@ -106,9 +109,9 @@ html {
     left: 0;
     width: 100%;
     border: 5px solid transparent;
-    -moz-border-image: -moz-linear-gradient(left, $turkis 0%, $blue 100%);
-    -webkit-border-image: -webkit-linear-gradient(left, $turkis 0%, $blue 100%);
-    border-image: linear-gradient(to right, $turkis 0%, $blue 100%);
+    -moz-border-image: -moz-linear-gradient(left, $red 0%, lighten($red,20%) 100%);
+    -webkit-border-image: -webkit-linear-gradient(left, $red 0%, lighten($red,20%) 100%);
+    border-image: linear-gradient(to right, $red 0%, lighten($red,20%) 100%);
     border-image-slice: 1;
   }
   .messages {
@@ -219,7 +222,7 @@ html {
       background: $grey;
     }
     50% {
-      background: #F00;
+      background: $red;
     }
     100% {
       background: $grey;
@@ -231,9 +234,16 @@ html {
       background: $grey;
     }
     50% {
-      background: #0F0;
+      background: $green;
     }
     100% {
       background: $grey;
     }
+}
+
+.logo{
+  position: absolute;
+  bottom: 3%;
+  width: 50%;
+  left: 10%;
 }
