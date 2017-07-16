@@ -65,7 +65,11 @@ const fillDialog = () => {
     {question: "The needs of the many outweigh the needs of the few.", answer: "Live long; and; prosper!"},
     {question: "I found you people in mud huts, you were living in CAVES!", answer: "You can't; kill; the messiah."},
     {question: "Combine Wirt's Leg and a Tome of Town Portal in the Horadric Cube.", answer: "And I will; reach; the Cow Level."},
-    {question: "Which city is between Dortmund und Hannover on the A2?", answer: "There is; no city; there."}
+    {question: "Which city is between Dortmund und Hannover on the A2?", answer: "There is; no city; there."},
+    {question: "My grandma said you deserved loosing your driving licence, you're a horrable driver!", answer: "Adding; insult; to injury."},
+    {question: "Have you brushed your teeth this morning? Otherwise please do it now!", answer: "I can not; brush my teeth; while driving."},
+    {question: "I love you Pumpkin.", answer: "I love; you Honey; Bunny."},
+    {question: "27 Ricks brutally murdered in their own timeline.", answer: "What?; That's; rickdiculous!"}
   ];
 }
 let notificationObserver;
