@@ -120,7 +120,7 @@ const clearLevel = (instance, correct) => {
   instance.state.set('textToggle', false);
   instance.state.set('chosenAnswers', []);
   $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-  setTimeout(()=>{instance.state.set('inactive', true)},1000);
+  setTimeout(()=>{instance.state.set('inactive', true)},2000);
 }
 const resetGame = (instance) => {
   fillDialog()
